@@ -1,76 +1,76 @@
 const gulp = require('gulp');
+const gulpLiveServer = require('gulp-live-server');
 const browserSync = require('browser-sync');
-const historyApiFallback = require('connect-history-api-fallback/lib');
-const nodemon = require('gulp-nodemon');
-const gprint = require('gulp-print').default;
 const del = require('del');
-const vinylPaths = require('vinyl-paths');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 
-function runNode(cb) {
-	let started = false;
-	
-	return nodemon({
-		script: 'run.js'
-	}).on('start', function () {
-		if (!started) {
-			cb();
-			started = true; 
-		} 
-	});
+gulp.task('clean', () => del('dist'));
+
+gulp.task('build', gulp.series(
+  'clean',
+  runBuild
+));
+
+function runBuild() {
+  return new Promise((resolve, reject) => {
+    webpack(webpackConfig(), (err, stats) => {
+      if (err) reject(err);
+      else if (stats.hasErrors()) reject(new Error(stats.compilation.errors.join('\n')));
+      else resolve();
+    });
+  })
 }
-
-gulp.task('clean', done => {
-  gulp.src('dist/*')
-    .pipe(gprint())
-    .pipe(vinylPaths(del));
-  done();
-});
-
-gulp.task('build', () => new Promise((resolve, reject) => {
-  webpack(webpackConfig(), (err, stats) => {
-    if (err) reject(err);
-    else if (stats.hasErrors()) reject(new Error(stats.compilation.errors.join('\n')));
-    else resolve();
-  });
-}));
 
 gulp.task('serve', gulp.series(
   'build',
-  runNode,
-  done => {
+  startServer,
+  configureBrowserSync
+));
+
+function startServer(done) {
+  gulpLiveServer.new('./server.js').start();
+  done();
+}
+
+function configureBrowserSync() {
+  return new Promise((resolve, reject) => {
     browserSync({
       online: false,
       open: false,
       port: 7000,
       logLevel: 'silent',
-      server: {
-        baseDir: ['dist'],
-        middleware: [historyApiFallback(), function(req, res, next) {
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          next();
-        }]
-      }
+      proxy: 'localhost:9000'
     }, function (err, bs) {
       if (err) {
         console.error(err.message);
+        reject(err);
         return;
       }
       const urls = bs.options.get('urls').toJS();
       console.log(`Application Available At: ${urls.local}`);
       console.log(`BrowserSync Available At: ${urls.ui}`);
-      done();
+      resolve();
     });
-  }
-));
-
-const refresh = gulp.series(
-  'build',
-  done => { browserSync.reload(); done(); }
-);
+  })
+}
 
 gulp.task('serve:watch', gulp.series(
   'serve',
-  () => gulp.watch('src', refresh)
+  watchSourceFiles
 ));
+
+function watchSourceFiles(done) {
+  gulp.watch('src', refresh);
+  done();
+}
+
+const refresh = gulp.series(
+  'build',
+  reload
+);
+
+function reload(done) {
+  browserSync.reload();
+  done();
+}
