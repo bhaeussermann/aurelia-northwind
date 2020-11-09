@@ -1,11 +1,12 @@
 <template>
   <require from="purecss/build/pure.css"></require>
+  <require from="app.css" as="app-styles"></require>
 
   <div class="pure-menu menu">
     <div class="pure-menu-heading">Northwind Manager</div>
   </div>
 
   <div class="main">
-    <h1>${message}</h1>
+    <router-view name="pageContent"></router-view>
   </div>
 </template>

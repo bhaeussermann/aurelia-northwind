@@ -4,5 +4,9 @@
 }
 
 .main {
-  padding: 20px;
+  padding: 0 60px;
+}
+
+.table {
+  width: 100%;
 }

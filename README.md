@@ -12,4 +12,4 @@ To run the application, execute:
 
 `npm start`
 
-The application will be hosted at `http://localhost:8080`
+The application will be hosted at `http://localhost:7000`

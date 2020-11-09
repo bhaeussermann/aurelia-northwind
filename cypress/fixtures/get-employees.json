@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "lastName": "Davolio",
+    "firstName": "Nancy",
+    "title": "Sales Representative",
+    "birthDate": "1948-12-08"
+  },
+  {
+    "id": 2,
+    "lastName": "Fuller",
+    "firstName": "Andrew",
+    "title": "Vice President, Sales",
+    "birthDate": "1952-02-19"
+  },
+  {
+    "id": 3,
+    "lastName": "Leverling",
+    "firstName": "Janet",
+    "title": "Sales Representative",
+    "birthDate": "1963-08-30"
+  }
+]
