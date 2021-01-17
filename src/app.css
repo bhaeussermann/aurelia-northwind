@@ -10,3 +10,8 @@
 .table {
   width: 100%;
 }
+
+.error {
+  color: red;
+  font-weight: bolder;
+}

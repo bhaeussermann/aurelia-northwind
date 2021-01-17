@@ -2,6 +2,7 @@
   <require from="../util/spinner"></require>
   <h1>Employees</h1>
   <spinner if.bind="isLoading"></spinner>
+  <div if.bind="errorMessage" class="error">${errorMessage}</div>
   <table if.bind="employees" id="employees" class="pure-table table">
     <thead>
       <th>Last Name</th>

@@ -1,22 +1,23 @@
 import { autoinject } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-fetch-client';
+import { EmployeesService } from 'services/employees-service';
 
 @autoinject
 export class Employees {
   isLoading = true;
+  errorMessage: string;
   employees: any[];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private service: EmployeesService) {}
 
   activate() {
     setTimeout(async () => {
       this.isLoading = true;
       try {
-        this.employees = await this.httpClient.fetch('api/employees').then(response => response.json());
+        this.employees = await this.service.getEmployees();
       }
       catch (error) {
-        console.error('Bad things happened: ' + error.message);
-        throw error;
+        this.errorMessage = 'Error loading employees: ' + error.message;
+        console.error('Error loading employees.', error);
       }
       finally {
         this.isLoading = false;
