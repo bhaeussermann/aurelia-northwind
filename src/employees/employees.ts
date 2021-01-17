@@ -3,18 +3,24 @@ import { HttpClient } from 'aurelia-fetch-client';
 
 @autoinject
 export class Employees {
-  employees: any[]
+  isLoading = true;
+  employees: any[];
 
   constructor(private httpClient: HttpClient) {}
 
-  async activate() {
-    try {
-      const data = await this.httpClient.fetch('api/employees').then(response => response.json());
-      this.employees = data;
-    }
-    catch (error) {
-      console.error('Bad things happened: ' + error.message);
-      throw error;
-    }
+  activate() {
+    setTimeout(async () => {
+      this.isLoading = true;
+      try {
+        this.employees = await this.httpClient.fetch('api/employees').then(response => response.json());
+      }
+      catch (error) {
+        console.error('Bad things happened: ' + error.message);
+        throw error;
+      }
+      finally {
+        this.isLoading = false;
+      }
+    });
   }
 }

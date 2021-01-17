@@ -1,6 +1,8 @@
 <template>
+  <require from="../util/spinner"></require>
   <h1>Employees</h1>
-  <table id="employees" class="pure-table table">
+  <spinner if.bind="isLoading"></spinner>
+  <table if.bind="employees" id="employees" class="pure-table table">
     <thead>
       <th>Last Name</th>
       <th>First Name</th>
