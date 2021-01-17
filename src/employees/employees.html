@@ -1,15 +1,27 @@
 <template>
+  <require from="./employees.css"></require>
   <require from="../util/spinner"></require>
-  <h1>Employees</h1>
+  <div class="title-container">
+    <h1 class="title">Employees</h1>
+    <span class="pure-form">
+      <input
+        data-cy="search-textbox"
+        class="pure-input-rounded"
+        type="text"
+        placeholder="Search"
+        value.two-way="searchText"
+        >
+    </span>
+  </div>
   <spinner if.bind="isLoading"></spinner>
   <div if.bind="errorMessage" class="error">${errorMessage}</div>
-  <table if.bind="employees" id="employees" class="pure-table table">
+  <table if.bind="filteredEmployees" data-cy="employees" class="pure-table table">
     <thead>
       <th>Last Name</th>
       <th>First Name</th>
       <th>Title</th>
     </thead>
-    <tr repeat.for="employee of employees">
+    <tr repeat.for="employee of filteredEmployees">
       <td>${employee.firstName}</td>
       <td>${employee.lastName}</td>
       <td>${employee.title}</td>

@@ -5,12 +5,12 @@ describe('View Employees', () => {
     before(setupContextPrecondition);
 
     it('Lists employees', () => {
-      cy.get('#employees td:nth-child(1)').then(elements => {
+      cy.get('[data-cy=employees] td:nth-child(1)').then(elements => {
         const names = elements.toArray().map(e => e.innerHTML);
         assert.deepEqual(names, ['Nancy', 'Andrew', 'Janet']);
       });
 
-      cy.get('#employees td:nth-child(2)').then(elements => {
+      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
         const names = elements.toArray().map(e => e.innerHTML);
         assert.deepEqual(names, ['Davolio', 'Fuller', 'Leverling']);
       });
@@ -29,6 +29,26 @@ describe('View Employees', () => {
       finally {
         setupContextPrecondition();
       }
+    });
+  });
+
+  context('View', () => {
+    before(setupContextPrecondition);
+
+    it('Filter', () => {
+      cy.get('[data-cy=search-textbox]').type('li');
+
+      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+        const names = elements.toArray().map(e => e.innerHTML);
+        assert.deepEqual(names, ['Davolio', 'Leverling']);
+      });
+
+      cy.get('[data-cy=search-textbox]').type('n');
+
+      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+        const names = elements.toArray().map(e => e.innerHTML);
+        assert.deepEqual(names, ['Leverling']);
+      });
     });
   });
 });
