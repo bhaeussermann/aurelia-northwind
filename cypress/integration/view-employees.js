@@ -7,12 +7,12 @@ describe('View Employees', () => {
     it('Lists employees', () => {
       cy.get('[data-cy=employees] td:nth-child(1)').then(elements => {
         const names = elements.toArray().map(e => e.innerHTML);
-        assert.deepEqual(names, ['Nancy', 'Andrew', 'Janet']);
+        assert.deepEqual(names, ['Davolio', 'Fuller', 'Leverling']);
       });
-
+      
       cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
         const names = elements.toArray().map(e => e.innerHTML);
-        assert.deepEqual(names, ['Davolio', 'Fuller', 'Leverling']);
+        assert.deepEqual(names, ['Nancy', 'Andrew', 'Janet']);
       });
     });
 
@@ -35,19 +35,50 @@ describe('View Employees', () => {
   context('View', () => {
     before(setupContextPrecondition);
 
+    beforeEach(() => {
+      cy.get('[data-cy=search-textbox]').clear();
+    });
+
     it('Filter', () => {
       cy.get('[data-cy=search-textbox]').type('li');
 
-      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+      cy.get('[data-cy=employees] td:nth-child(1)').then(elements => {
         const names = elements.toArray().map(e => e.innerHTML);
         assert.deepEqual(names, ['Davolio', 'Leverling']);
       });
 
       cy.get('[data-cy=search-textbox]').type('n');
 
-      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+      cy.get('[data-cy=employees] td:nth-child(1)').then(elements => {
         const names = elements.toArray().map(e => e.innerHTML);
         assert.deepEqual(names, ['Leverling']);
+      });
+    });
+
+    it('Sort', () => {
+      cy.get('[data-cy=first-name-header]').click();
+
+      cy.get('[data-cy=employees] td:nth-child(1)').then(elements => {
+        const names = elements.toArray().map(e => e.innerHTML);
+        assert.deepEqual(names, ['Fuller', 'Leverling', 'Davolio']);
+      });
+      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+        const names = elements.toArray().map(e => e.innerHTML);
+        assert.deepEqual(names, ['Andrew', 'Janet', 'Nancy']);
+      });
+
+      cy.get('[data-cy=first-name-header]').click();
+
+      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+        const names = elements.toArray().map(e => e.innerHTML);
+        assert.deepEqual(names, ['Nancy', 'Janet', 'Andrew']);
+      });
+
+      cy.get('[data-cy=last-name-header]').click();
+
+      cy.get('[data-cy=employees] td:nth-child(2)').then(elements => {
+        const names = elements.toArray().map(e => e.innerHTML);
+        assert.deepEqual(names, ['Nancy', 'Andrew', 'Janet']);
       });
     });
   });

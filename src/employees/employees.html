@@ -9,21 +9,33 @@
         class="pure-input-rounded"
         type="text"
         placeholder="Search"
-        value.two-way="searchText"
+        value.bind="searchText"
         >
     </span>
   </div>
   <spinner if.bind="isLoading"></spinner>
   <div if.bind="errorMessage" class="error">${errorMessage}</div>
-  <table if.bind="filteredEmployees" data-cy="employees" class="pure-table table">
+  <table if.bind="displayedEmployees" data-cy="employees" class="pure-table table">
     <thead>
-      <th>Last Name</th>
-      <th>First Name</th>
-      <th>Title</th>
+      <th
+        data-cy="last-name-header"
+        class.bind="lastNameColumnClass"
+        click.trigger="toggleColumn('lastName')"
+        >Last Name</th>
+      <th
+        data-cy="first-name-header"
+        class.bind="firstNameColumnClass"
+        click.trigger="toggleColumn('firstName')"
+        >First Name</th>
+      <th
+        data-cy="title-header"
+        class.bind="titleColumnClass"
+        click.trigger="toggleColumn('title')"
+        >Title</th>
     </thead>
-    <tr repeat.for="employee of filteredEmployees">
-      <td>${employee.firstName}</td>
+    <tr repeat.for="employee of displayedEmployees">
       <td>${employee.lastName}</td>
+      <td>${employee.firstName}</td>
       <td>${employee.title}</td>
     </tr>
   </table>

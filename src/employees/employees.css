@@ -6,3 +6,35 @@
 .title-container > .title {
   margin-right: auto;
 }
+
+.table {
+  table-layout: fixed;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.sortable::after {
+  content: '';
+  display: inline-block;
+  margin-left: 10px;
+  padding: 3px;
+}
+
+.sort-arrow::after {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+}
+
+.up::after {
+  margin-top: 3px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down::after {
+  margin-bottom: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
