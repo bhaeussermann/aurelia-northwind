@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { getApplicationUrl, getApiUrl } from '../support/url-helpers';
+
 describe('View Employees', () => {
   context('Load', () => {
     before(setupContextPrecondition);
@@ -18,11 +20,11 @@ describe('View Employees', () => {
 
     it('Shows loading error', () => {
       try {
-        cy.route2('GET', 'http://localhost:9000/api/employees', {
+        cy.route2('GET', getApiUrl('employees'), {
           statusCode: 500,
           body: 'Something went wrong'
         }).as('get-employees');
-        cy.visit('http://localhost:9000');
+        cy.visit(getApplicationUrl());
         cy.wait('@get-employees');
         cy.get('.error').should('have.text', 'Error loading employees: Something went wrong');
       }
@@ -86,8 +88,8 @@ describe('View Employees', () => {
 
 function setupContextPrecondition() {
   cy.fixture('get-employees').then(response => {
-    cy.route2('GET', 'http://localhost:9000/api/employees', response).as('get-employees');
+    cy.route2('GET', getApiUrl('employees'), response).as('get-employees');
   });
-  cy.visit('http://localhost:9000');
+  cy.visit(getApplicationUrl());
   cy.wait('@get-employees');
 }

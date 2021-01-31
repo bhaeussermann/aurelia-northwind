@@ -15,6 +15,13 @@
   </div>
   <spinner if.bind="isLoading"></spinner>
   <div if.bind="errorMessage" class="error">${errorMessage}</div>
+  <button
+    if.bind="displayedEmployees"
+    data-cy="add-button"
+    id="add-button"
+    class="pure-button"
+    click.trigger="add()"
+    >Add</button>
   <table if.bind="displayedEmployees" data-cy="employees" class="pure-table table">
     <thead>
       <th

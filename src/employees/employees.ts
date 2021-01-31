@@ -1,4 +1,5 @@
 import { autoinject } from 'aurelia-framework';
+import { Router, RouteConfig, NavigationInstruction } from 'aurelia-tools';
 import { Employee } from 'models/employee';
 import { EmployeesService } from 'services/employees-service';
 import { SortOrder, SortService } from 'services/sort-service';
@@ -10,6 +11,8 @@ export class Employees {
 
   employees: Employee[];
   displayedEmployees: Employee[];
+
+  router: Router;
 
   get searchText() {
     return this._searchText;
@@ -36,7 +39,9 @@ export class Employees {
     this.sortService.toggleColumn('lastName');
   }
 
-  activate() {
+  activate(_params: any, _routeConfig: RouteConfig, navigationInstruction: NavigationInstruction) {
+    this.router = navigationInstruction.router;
+
     setTimeout(async () => {
       this.isLoading = true;
       try {
@@ -55,6 +60,10 @@ export class Employees {
   toggleColumn(columnName: string) {
     this.sortService.toggleColumn(columnName);
     this.refreshFilteredEmployees();
+  }
+
+  add() {
+    this.router.navigateToRoute('add-employee');
   }
 
   private refreshFilteredEmployees() {

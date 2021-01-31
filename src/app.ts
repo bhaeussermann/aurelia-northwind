@@ -8,12 +8,20 @@ export class App {
         redirect: 'employees'
       },
       {
+        name: 'employees',
         route: [ 'employees' ],
         viewPorts: {
           pageContent: { moduleId: PLATFORM.moduleName('employees/employees') },
         },
-        title: 'Employees',
-        nav: true 
+        title: 'Employees'
+      },
+      {
+        name: 'add-employee',
+        route: [ 'employees/add' ],
+        viewPorts: {
+          pageContent: { moduleId: PLATFORM.moduleName('edit-employee/edit-employee') },
+        },
+        title: 'Add Employee'
       }
     ]);
   }

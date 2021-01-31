@@ -1,0 +1,78 @@
+<template>
+  <require from="./edit-employee.css"></require>
+  <require from="../util/spinner"></require>
+  <h1>Add Employee</h1>
+  <form class="pure-form" onsubmit="return false" submit.delegate="save()">
+    <fieldset disabled.bind="isSaving">
+      <table>
+        <tr>
+          <td>
+            <label for="first-name">First Name</label>
+          </td>
+          <td>
+            <input
+              id="first-name"
+              type="text"
+              focus.bind="firstNameHasFocus"
+              value.bind="employee.firstName"
+              required
+              >
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="last-name">Last Name</label>
+          </td>
+          <td>
+            <input
+              id="last-name"
+              type="text"
+              value.bind="employee.lastName"
+              required
+              >
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="title">Title</label>
+          </td>
+          <td>
+            <input
+              id="title"
+              type="text"
+              value.bind="employee.title"
+              required
+              >
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="birth-date">Birth Date</label>
+          </td>
+          <td>
+            <input
+              id="birth-date"
+              type="date"
+              value.bind="employee.birthDate"
+              >
+          </td>
+        </tr>
+      </table>
+      <div class="button-container">
+        <button
+          data-cy="cancel-button"
+          class="pure-button ${isSaving ? 'pure-button-disabled' : ''}"
+          type="button"
+          click.trigger="cancel()"
+          >Cancel</button>
+        <button
+          data-cy="save-button"
+          class="pure-button ${isSaving ? 'pure-button-disabled' : ''}"
+          type="submit"
+          >Save</button>
+        <spinner if.bind="isSaving" is-inline="true"></spinner>
+      </div>
+      <div if.bind="errorMessage" class="error">${errorMessage}</div>
+    </fieldset>
+  </form>
+</template>
