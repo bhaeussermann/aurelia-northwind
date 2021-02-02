@@ -44,3 +44,11 @@
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 }
+
+.link-column {
+  display: flex;
+}
+
+.link-column > a {
+  margin: 0 auto;
+}

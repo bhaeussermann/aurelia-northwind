@@ -12,9 +12,28 @@ export class EmployeesService {
     throw new Error(await response.text());
   }
 
-  async saveChanges(employee: Employee): Promise<void> {
+  async getEmployee(employeeId: number): Promise<Employee> {
+    const response = await this.httpClient.fetch('api/employees/' + employeeId);
+    if (response.status === 200) return await response.json();
+    throw new Error(await response.text());
+  }
+
+  async addEmployee(employee: Employee): Promise<void> {
     const response = await this.httpClient.post(
       'api/employees',
+      JSON.stringify(employee),
+      {
+        headers: new Headers({
+          'content-type': 'application/json'
+        })
+      }
+    );
+    if (response.status !== 200) throw new Error(await response.text());
+  }
+
+  async updateEmployee(employee: Employee): Promise<void> {
+    const response = await this.httpClient.put(
+      'api/employees/' + employee.id,
       JSON.stringify(employee),
       {
         headers: new Headers({

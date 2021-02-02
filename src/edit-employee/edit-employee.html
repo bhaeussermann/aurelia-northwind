@@ -1,7 +1,7 @@
 <template>
   <require from="./edit-employee.css"></require>
   <require from="../util/spinner"></require>
-  <h1>Add Employee</h1>
+  <h1>${isAdd ? 'Add' : 'Edit'} Employee</h1>
   <form class="pure-form" onsubmit="return false" submit.delegate="save()">
     <fieldset disabled.bind="isSaving">
       <table>

@@ -20,7 +20,7 @@
     data-cy="add-button"
     id="add-button"
     class="pure-button"
-    click.trigger="add()"
+    click.trigger="addEmployee()"
     >Add</button>
   <table if.bind="displayedEmployees" data-cy="employees" class="pure-table table">
     <thead>
@@ -39,11 +39,18 @@
         class.bind="titleColumnClass"
         click.trigger="toggleColumn('title')"
         >Title</th>
+      <th></th>
     </thead>
     <tr repeat.for="employee of displayedEmployees">
       <td>${employee.lastName}</td>
       <td>${employee.firstName}</td>
       <td>${employee.title}</td>
+      <td class="link-column">
+        <a
+          href="#"
+          data-cy="edit-link"
+          click.trigger="editEmployee(employee.id)"
+          >Edit</a></td>
     </tr>
   </table>
 </template>

@@ -20,7 +20,7 @@ describe('View Employees', () => {
 
     it('Shows loading error', () => {
       try {
-        cy.route2('GET', getApiUrl('employees'), {
+        cy.intercept('GET', getApiUrl('employees'), {
           statusCode: 500,
           body: 'Something went wrong'
         }).as('get-employees');
@@ -87,9 +87,7 @@ describe('View Employees', () => {
 });
 
 function setupContextPrecondition() {
-  cy.fixture('get-employees').then(response => {
-    cy.route2('GET', getApiUrl('employees'), response).as('get-employees');
-  });
+  cy.intercept('GET', getApiUrl('employees'), { fixture: 'get-employees' }).as('get-employees');
   cy.visit(getApplicationUrl());
   cy.wait('@get-employees');
 }

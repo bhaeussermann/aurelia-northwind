@@ -62,8 +62,12 @@ export class Employees {
     this.refreshFilteredEmployees();
   }
 
-  add() {
+  addEmployee() {
     this.router.navigateToRoute('add-employee');
+  }
+
+  editEmployee(employeeId: string) {
+    this.router.navigateToRoute('edit-employee', { id: employeeId });
   }
 
   private refreshFilteredEmployees() {

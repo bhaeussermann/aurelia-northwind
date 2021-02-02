@@ -22,6 +22,14 @@ export class App {
           pageContent: { moduleId: PLATFORM.moduleName('edit-employee/edit-employee') },
         },
         title: 'Add Employee'
+      },
+      {
+        name: 'edit-employee',
+        route: [ 'employees/edit/:id' ],
+        viewPorts: {
+          pageContent: { moduleId: PLATFORM.moduleName('edit-employee/edit-employee') },
+        },
+        title: 'Edit Employee'
       }
     ]);
   }
