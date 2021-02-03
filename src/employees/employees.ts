@@ -8,6 +8,7 @@ import { SortOrder, SortService } from 'services/sort-service';
 export class Employees {
   isLoading = true;
   errorMessage: string;
+  deletedEmployeeId: number;
 
   employees: Employee[];
   displayedEmployees: Employee[];
@@ -41,20 +42,7 @@ export class Employees {
 
   activate(_params: any, _routeConfig: RouteConfig, navigationInstruction: NavigationInstruction) {
     this.router = navigationInstruction.router;
-
-    setTimeout(async () => {
-      this.isLoading = true;
-      try {
-        this.displayedEmployees = this.employees = await this.service.getEmployees();
-      }
-      catch (error) {
-        this.errorMessage = 'Error loading employees: ' + error.message;
-        console.error('Error loading employees.', error);
-      }
-      finally {
-        this.isLoading = false;
-      }
-    });
+    setTimeout(async () => await this.refreshEmployees());
   }
 
   toggleColumn(columnName: string) {
@@ -66,8 +54,44 @@ export class Employees {
     this.router.navigateToRoute('add-employee');
   }
 
-  editEmployee(employeeId: string) {
+  editEmployee(employeeId: number) {
     this.router.navigateToRoute('edit-employee', { id: employeeId });
+  }
+
+  async deleteEmployee(employee: Employee) {
+    if (!confirm(`Delete ${employee.firstName} ${employee.lastName}?`)) return;
+    this.displayEmployeeSpinner(employee.id);
+    try {
+      await this.service.deleteEmployee(employee.id);
+    } catch (error) {
+      this.errorMessage = 'Error deleting employee: ' + error.message;
+      console.error('Error deleting employee.', error);
+      return;
+    } finally {
+      this.deletedEmployeeId = null;
+    }
+    await this.refreshEmployees();
+  }
+
+  private displayEmployeeSpinner(employeeId: number) {
+    this.deletedEmployeeId = employeeId;
+    this.displayedEmployees = [];
+    setTimeout(() => this.refreshFilteredEmployees());
+  }
+
+  private async refreshEmployees() {
+    this.isLoading = true;
+    try {
+      this.displayedEmployees = this.employees = await this.service.getEmployees();
+    }
+    catch (error) {
+      this.errorMessage = 'Error loading employees: ' + error.message;
+      console.error('Error loading employees.', error);
+    }
+    finally {
+      this.isLoading = false;
+    }
+    this.refreshFilteredEmployees();
   }
 
   private refreshFilteredEmployees() {

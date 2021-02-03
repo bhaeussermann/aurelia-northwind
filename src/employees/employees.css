@@ -52,3 +52,7 @@
 .link-column > a {
   margin: 0 auto;
 }
+
+.link-column > spinner {
+  margin-top: -5px;
+}

@@ -50,7 +50,14 @@
           href="#"
           data-cy="edit-link"
           click.trigger="editEmployee(employee.id)"
-          >Edit</a></td>
+          >Edit</a>
+        <a
+          href="#"
+          data-cy="delete-link"
+          click.trigger="deleteEmployee(employee)"
+          >Delete</a>
+        <spinner if.bind="employee.id === deletedEmployeeId" is-inline="true"></spinner>
+      </td>
     </tr>
   </table>
 </template>

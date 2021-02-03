@@ -18,6 +18,11 @@ export class EmployeesService {
     throw new Error(await response.text());
   }
 
+  async deleteEmployee(employeeId: number): Promise<void> {
+    const response = await this.httpClient.delete('api/employees/' + employeeId);
+    if (response.status !== 200) throw new Error(await response.text());
+  }
+
   async addEmployee(employee: Employee): Promise<void> {
     const response = await this.httpClient.post(
       'api/employees',

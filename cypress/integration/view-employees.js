@@ -84,6 +84,17 @@ describe('View Employees', () => {
       });
     });
   });
+
+  context('Delete', () => {
+    before(setupContextPrecondition);
+
+    it('Successfully delete', () => {
+      cy.intercept('DELETE', getApiUrl('employees/1'), { }).as('delete-employee');
+      cy.get('[data-cy=delete-link]').first().click();
+      cy.wait('@delete-employee');
+      cy.wait('@get-employees');
+    });
+  });
 });
 
 function setupContextPrecondition() {
